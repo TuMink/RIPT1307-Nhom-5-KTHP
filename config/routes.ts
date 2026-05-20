@@ -10,6 +10,12 @@
                 component: './Auth/Login',
             },
             {
+                path: '/user/register',
+                layout: false,
+                name: 'register',
+                component: './Auth/Register',
+            },
+            {
                 path: '/user',
                 redirect: '/user/login',
             },

@@ -13,7 +13,6 @@ import NotAccessible from './pages/exception/403';
 import NotFoundContent from './pages/exception/404';
 import type { IInitialState } from './services/base/typing';
 import './styles/global.less';
-
 import { bootstrapMockData } from '@/services/QuanLyComRang/mockData';
 import { getCurrentUser } from '@/utils/auth';
 import { UserRole } from '@/models/quanlycomrang/users';
@@ -24,22 +23,17 @@ export const initialStateConfig = {
 
 export async function getInitialState(): Promise<IInitialState> {
     bootstrapMockData(); 
-
     const currentUser = getCurrentUser(); 
-
     return {
         permissionLoading: false,
         currentUser: currentUser || undefined, 
     };
 }
-
 const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => ({});
-
 export const request: RequestConfig = {
     errorHandler: (error: ResponseError) => {
         const { messages } = getIntl(getLocale());
         const { response } = error;
-
         if (response && response.status) {
             const { status, statusText, url } = response;
             const requestErrorMessage = messages['app.request.error'];
@@ -83,7 +77,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
             if (!currentUser && !location.pathname.startsWith('/user')) {
                 history.replace('/user/login');
             }
-
             if (currentUser && location.pathname === '/') {
                 const role = currentUser as any;
                 if (role.role === UserRole.CUSTOMER) history.replace('/customer/home');
@@ -91,7 +84,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
                 if (role.role === UserRole.ADMIN) history.replace('/admin/dashboard');
             }
         },
-
         menuItemRender: (item: any, dom: any) => (
             <a
                 className='not-underline'
