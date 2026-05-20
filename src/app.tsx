@@ -1,4 +1,3 @@
-// src/app.tsx
 import Footer from '@/components/Footer';
 import RightContent from '@/components/RightContent';
 import { notification } from 'antd';
@@ -14,12 +13,15 @@ import NotAccessible from './pages/exception/403';
 import NotFoundContent from './pages/exception/404';
 import type { IInitialState } from './services/base/typing';
 import './styles/global.less';
+
 import { bootstrapMockData } from '@/services/QuanLyComRang/mockData';
 import { getCurrentUser } from '@/utils/auth';
+import { UserRole } from '@/models/quanlycomrang/users';
 
 export const initialStateConfig = {
     loading: <></>,
 };
+
 export async function getInitialState(): Promise<IInitialState> {
     bootstrapMockData(); 
 
@@ -77,15 +79,16 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         onPageChange: () => {
             const { location } = history;
             const currentUser = initialState?.currentUser;
+            
             if (!currentUser && !location.pathname.startsWith('/user')) {
                 history.replace('/user/login');
             }
 
             if (currentUser && location.pathname === '/') {
                 const role = currentUser as any;
-                if (role.role === 'customer') history.replace('/customer/home');
-                if (role.role === 'staff') history.replace('/staff/pos');
-                if (role.role === 'admin') history.replace('/admin/dashboard');
+                if (role.role === UserRole.CUSTOMER) history.replace('/customer/home');
+                if (role.role === UserRole.STAFF) history.replace('/staff/pos');
+                if (role.role === UserRole.ADMIN) history.replace('/admin/dashboard');
             }
         },
 
