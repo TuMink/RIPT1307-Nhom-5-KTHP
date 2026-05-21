@@ -18,7 +18,23 @@ const RegisterForm = ({ onFinish }: { onFinish: (values: any) => void }) => (
         <Input prefix={<UserOutlined />} placeholder="Tên của bạn" />
       </Form.Item>
       
-      <Form.Item name="phone" rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}>
+      <Form.Item 
+        name="phone" 
+        rules={[
+          { required: true, message: 'Vui lòng nhập số điện thoại!' },
+          {
+            validator(_, value) {
+              if (!value) {
+                return Promise.resolve();
+              }
+              if (value.length === 10 && /^\d{10}$/.test(value)) {
+                return Promise.resolve();
+              }
+              return Promise.reject(new Error('Số điện thoại không hợp lệ!'));
+            },
+          }
+        ]}
+      >
         <Input prefix={<PhoneOutlined />} placeholder="Số điện thoại" />
       </Form.Item>
       
